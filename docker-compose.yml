@@ -1,23 +1,27 @@
 version: '3'
 
 services:
-  # gateway:
-  #   build:
-  #     context: ./gateway
-  #     dockerfile: Dockerfile
-  #   image: gateway
-  #   container_name: gateway
-  #   depends_on:
-  #     - users_service
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8080:8080"
-  #   volumes:
-  #     - .:/home/s/server
-  #     - node_modules:/home/s/server/node_modules
-  #   networks:
-  #     - app-network
-  #   command: node index.js
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    image: gateway
+    container_name: gateway
+    depends_on:
+      - users_service
+    env_file: ./gateway/.env
+    environment:
+      - USERS_PORT=users_service:50051
+      - BLOGGERS_PORT=blogger_service:50052
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/home/s/server
+      - node_modules:/home/s/server/node_modules
+    networks:
+      - app-network
+    command: node index.js
   
   users_service:
     build:
@@ -29,7 +33,7 @@ services:
     container_name: users_service
     restart: always
     ports:
-      - 127.0.0.1:50051:50051
+      - "50051:50051"
     links:
       - users_db
     env_file: ./users_service/.env
@@ -55,10 +59,10 @@ services:
     image: blogger_service
     depends_on:
       - users_db
-    container_name: bloggers_service
+    container_name: blogger_service
     restart: unless-stopped
     ports:
-      - 127.0.0.1:50052:50052
+      - "50052:50052"
     links:
       - users_db
     env_file: ./bloggers_service/.env
@@ -68,7 +72,7 @@ services:
       - MONGO_URL=users_db
       - MONGO_DB_BLOGGERS=$MONGO_DB_BLOGGERS
       - BLOGGERS_PORT=$BLOGGERS_PORT
-      - USERS_PORT=users_service
+      - USERS_PORT=users_service:50051
 
     volumes:
       - ./bloggers_service:/home/services/s/bloggers_service

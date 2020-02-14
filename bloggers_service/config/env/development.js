@@ -10,7 +10,7 @@ const {
 } = process.env;
 
 module.exports = {
-  port: BLOGGERS_PORT || '0.0.0.0:50052',
+  port: BLOGGERS_PORT,
   db: `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_URL}/${MONGO_DB_BLOGGERS}?authSource=admin`,
-  authPort: USERS_PORT || '0.0.0.0:50051',
+  authPort: USERS_PORT,
 };
