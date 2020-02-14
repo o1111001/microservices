@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message CreateComment {
+  string token = 1;
+  string commentId = 2;
+  string text = 3;
+}
