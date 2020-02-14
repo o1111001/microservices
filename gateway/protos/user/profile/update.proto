@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message UpdatePassword {
+  string token = 1;
+  string password = 2;
+}
+
+message UpdateName {
+  string token = 1;
+  string name = 2;
+}
