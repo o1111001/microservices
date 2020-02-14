@@ -26,7 +26,6 @@ const {
 } = require('./services');
 
 const config = require('./config/env');
-console.log(config)
 
 function connectDB(cb) {
   mongoose.connect(config.db,

@@ -30,8 +30,6 @@ const {
 
 const config = require('./config/env');
 
-console.log(config)
-
 function connectDB(cb) {
   mongoose.connect(config.db,
     { useNewUrlParser: true,
@@ -42,7 +40,6 @@ function connectDB(cb) {
 
 function getServer() {
   connectDB(err => {
-    console.log(config.db)
     if (err) {console.log(err); return console.error('DB connect error')};
     return console.log('DB has been connected');
   });
