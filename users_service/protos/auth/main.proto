@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+import "signup.proto";
+import "signin.proto";
+import "auth.proto";
