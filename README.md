@@ -1,6 +1,6 @@
 # Microservices
 
-![diagram](asserts/diagram.png?raw=true "Title")
+![diagram](asserts/diagram.png?raw=true "Diagram")
 
 
 ## Deploy
