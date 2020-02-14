@@ -1,0 +1,106 @@
+version: '3'
+
+services:
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    image: gateway
+    container_name: gateway
+    depends_on:
+      - users_service
+    env_file: ./gateway/.env
+    environment:
+      - USERS_PORT=users_service:50051
+      - BLOGGERS_PORT=blogger_service:50052
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/home/s/server
+      - node_modules:/home/s/server/node_modules
+    networks:
+      - app-network
+    command: node index.js
+  
+  users_service:
+    build:
+      context: ./users_service
+      dockerfile: Dockerfile
+    image: users_service
+    depends_on:
+      - users_db
+    container_name: users_service
+    restart: always
+    ports:
+      - "50051:50051"
+    links:
+      - users_db
+    env_file: ./users_service/.env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_URL=users_db
+      - MONGO_DB_USERS=$MONGO_DB_USERS
+      - MONGO_DB_TEST=$MONGO_DB_TEST
+      - USERS_PORT=$USERS_PORT
+      - CORE_GRPC_SERVICE_HOST=50000
+    volumes:
+      - ./users_service:/home/services/s/users_service
+      - ./users_service/node_modules:/home/services/users_service/s/node_modules
+    networks:
+      - app-network
+    command: node index.js
+
+  blogger_service:
+    build:
+      context: ./bloggers_service
+      dockerfile: Dockerfile
+    image: blogger_service
+    depends_on:
+      - users_db
+    container_name: blogger_service
+    restart: unless-stopped
+    ports:
+      - "50052:50052"
+    links:
+      - users_db
+    env_file: ./bloggers_service/.env
+    environment:
+      - MONGO_USERNAME=$MONGO_USERNAME
+      - MONGO_PASSWORD=$MONGO_PASSWORD
+      - MONGO_URL=users_db
+      - MONGO_DB_BLOGGERS=$MONGO_DB_BLOGGERS
+      - BLOGGERS_PORT=$BLOGGERS_PORT
+      - USERS_PORT=users_service:50051
+
+    volumes:
+      - ./bloggers_service:/home/services/s/bloggers_service
+      - ./bloggers_service/node_modules:/home/services/bloggers_service/s/node_modules
+    networks:
+      - app-network
+    command: node index.js
+
+  users_db:
+    image: mongo:4.1.8-xenial
+    container_name: users_db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:     
+      - dbdata:/usr/src/db/users
+    networks:
+      - app-network 
+    ports:
+      - "27018:27017"
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:  
