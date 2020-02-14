@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message SignIn {
+  string email = 1;
+  string password = 2;
+}
+message SuccessSignIn {
+  bool success = 1;
+  string message = 2;
+  string token = 3;
+}
