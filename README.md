@@ -1,5 +1,7 @@
 # microservices
 
+![diagram](asserts/diagram.png?raw=true "Title")
+
 ### Deploy
 
 1. chmod +x start.sh
