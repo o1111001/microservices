@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-import "createPost.proto";
-import "getPost.proto";
-import "likePost.proto";
-import "getFullPost.proto";
-import "getLatestPosts.proto";

@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-message SignUp {
-  string email = 1;
-  string password = 2;
-  string role = 3;
-  string name = 4;
-}

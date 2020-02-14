@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-message CreateThread {
-  string token = 1;
-  string postId = 2;
-  string text = 3;
-}
