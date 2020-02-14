@@ -8,6 +8,11 @@
 1. chmod +x start.sh
 2. ./start.sh
 
+## Run tests
+
+1. cd users_service
+2. npm test
+
 
 ## API
 
