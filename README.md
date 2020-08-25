@@ -1,4 +1,4 @@
-# Microservices
+# Sample of a microservice architecture on grpc
 
 ![diagram](asserts/diagram.png?raw=true "Diagram")
 
